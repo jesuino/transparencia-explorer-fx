@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="643.0" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jugvale.transparenciaexplorerfx.AppController">
+  <children>
+    <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" minHeight="302.0" minWidth="327.0" prefHeight="317.0" prefWidth="327.0">
+      <children>
+        <ImageView fitHeight="316.640625" fitWidth="359.51904858879305" layoutX="0.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../imagens/brasil.png" />
+          </image>
+        </ImageView>
+        <Group id="Group" layoutX="37.0" layoutY="25.0">
+          <children>
+            <Label layoutX="29.0" layoutY="53.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="AM">
+              <font>
+                <Font name="Arial Bold" size="13.0" fx:id="x1" />
+              </font>
+            </Label>
+            <Label font="$x1" layoutX="0.0" layoutY="92.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="AC" />
+            <Label font="$x1" layoutX="63.0" layoutY="0.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="RR" />
+            <Label font="$x1" layoutX="127.0" layoutY="53.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="PA" />
+            <Label font="$x1" layoutX="137.0" layoutY="2.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="AP" />
+            <Label font="$x1" layoutX="185.0" layoutY="56.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="MA" />
+            <Label font="$x1" layoutX="163.0" layoutY="101.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="TO" />
+            <Label font="$x1" layoutX="105.0" layoutY="118.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="MT" />
+            <Label font="$x1" layoutX="53.0" layoutY="104.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="RO" />
+            <Label font="$x1" layoutX="111.0" layoutY="174.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="MS" />
+            <Label font="$x1" layoutX="138.0" layoutY="148.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="GO" />
+            <Label font="$x1" layoutX="165.0" layoutY="195.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="SP" />
+            <Label font="$x1" layoutX="132.0" layoutY="210.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="PR" />
+            <Label font="$x1" layoutX="149.0" layoutY="230.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="SC" />
+            <Label font="$x1" layoutX="127.0" layoutY="251.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="RS" />
+            <Label font="$x1" layoutX="192.0" layoutY="162.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="MG" />
+            <Label font="$x1" layoutX="215.0" layoutY="191.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="RJ" />
+            <Label font="$x1" layoutX="229.0" layoutY="174.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="ES" />
+            <Label font="$x1" layoutX="214.0" layoutY="116.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="BA" />
+            <Label font="$x1" layoutX="254.0" layoutY="107.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="SE" />
+            <Label font="$x1" layoutX="266.0" layoutY="93.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="AL" />
+            <Label font="$x1" layoutX="272.0" layoutY="83.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="PE" />
+            <Label font="$x1" layoutX="276.0" layoutY="68.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="PB" />
+            <Label font="$x1" layoutX="261.0" layoutY="52.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="RN" />
+            <Label font="$x1" layoutX="231.0" layoutY="51.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="CE" />
+            <Label font="$x1" layoutX="201.0" layoutY="78.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="PI" />
+          </children>
+        </Group>
+        <Label font="$x1" layoutX="204.0" layoutY="160.0" onMouseReleased="#estadoSelecionado" styleClass="estado" text="DF" />
+        <TitledPane id="pnlEstado" fx:id="pnlDadosEstado" alignment="CENTER" animated="false" collapsible="false" layoutX="339.0" layoutY="38.0" prefWidth="295.0" text="Distrito Federal" textAlignment="LEFT">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <VBox id="VBox" alignment="CENTER" layoutX="0.0" layoutY="2.0" prefHeight="181.0" prefWidth="291.0" spacing="5.0">
+                  <children>
+                    <Label fx:id="lblGovernadores" prefWidth="250.0" text="Governadores" VBox.vgrow="ALWAYS">
+                      <font>
+                        <Font name="System Bold Italic" size="18.0" fx:id="x2" />
+                      </font>
+                    </Label>
+                    <Label fx:id="lblSenadores" font="$x2" prefWidth="250.0" text="Senadores" VBox.vgrow="ALWAYS" />
+                    <Label fx:id="lblDepEstaduais" font="$x2" prefWidth="250.0" text="Deputados Estaduais" VBox.vgrow="ALWAYS" />
+                    <Label fx:id="lblDepFederais" font="$x2" prefWidth="250.0" text="Deputados Federais" VBox.vgrow="ALWAYS" />
+                    <Label fx:id="lblDepDistritais" font="$x2" prefWidth="250.0" text="Deputados Distritais" VBox.vgrow="ALWAYS" />
+                  </children>
+                </VBox>
+              </children>
+            </AnchorPane>
+          </content>
+          <font>
+            <Font name="System Bold" size="22.0" />
+          </font>
+        </TitledPane>
+      </children>
+    </AnchorPane>
+    <VBox id="VBox" alignment="CENTER" layoutX="0.0" layoutY="316.0" spacing="5.0">
+      <children>
+        <HBox id="HBox" alignment="CENTER" prefWidth="643.0" spacing="5.0">
+          <children>
+            <ToggleButton fx:id="btnGovernador" mnemonicParsing="false" prefHeight="15.0" prefWidth="120.0" text="Governadores">
+              <font>
+                <Font name="System Bold" size="9.0" fx:id="x3" />
+              </font>
+              <toggleGroup>
+                <ToggleGroup fx:id="grpCargos" />
+              </toggleGroup>
+            </ToggleButton>
+            <ToggleButton fx:id="btnSenador" font="$x3" mnemonicParsing="false" prefHeight="15.0" prefWidth="120.0" text="Senadores" toggleGroup="$grpCargos" />
+            <ToggleButton fx:id="btnDepEstadual" font="$x3" mnemonicParsing="false" prefHeight="15.0" prefWidth="120.0" text="Dep. Estaduais" toggleGroup="$grpCargos" />
+            <ToggleButton fx:id="btnDepFederal" font="$x3" mnemonicParsing="false" prefHeight="15.0" prefWidth="120.0" text="Dep. Federais" toggleGroup="$grpCargos" />
+            <ToggleButton fx:id="btnDepDistrital" font="$x3" mnemonicParsing="false" prefHeight="15.0" prefWidth="120.0" text="Dep. Distritais" toggleGroup="$grpCargos" />
+          </children>
+        </HBox>
+        <TableView fx:id="tblCandidatos" prefHeight="249.0" prefWidth="643.0">
+          <columns>
+            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="244.0" text="Apelido" fx:id="colApelido" />
+            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="303.0" text="Nome" fx:id="colNome" />
+            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="94.0" text="Partido" fx:id="colPartido" />
+          </columns>
+        </TableView>
+      </children>
+    </VBox>
+    <Label layoutX="0.0" layoutY="585.0" prefHeight="33.0" prefWidth="643.0" text="Fonte dos dados: Transparência Brasil, projetos Excelências e Às Claras. A Transparência Brasil não se responsabiliza pelo uso que venha a ser feito desses dados nesta aplicação" textAlignment="CENTER" textFill="#ff3333" wrapText="true">
+      <font>
+        <Font name="System Bold Italic" size="12.0" />
+      </font>
+    </Label>
+  </children>
+</AnchorPane>
