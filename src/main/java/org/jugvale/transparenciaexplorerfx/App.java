@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     final String FXML_INICIAL = "/fxml/app.fxml";
+    final String CSS_INICIAL = "/css/app.css";
 
     public static void main(String args[]) {
         launch();
@@ -24,6 +25,7 @@ public class App extends Application {
             URL urlFxml = getClass().getResource(FXML_INICIAL);
             Parent pnlRaiz = FXMLLoader.load(urlFxml);
             Scene cena = new Scene(pnlRaiz);
+            cena.getStylesheets().add(CSS_INICIAL);
             s.setTitle("Explorando a API de Transparência");
             s.setScene(cena);
             s.show();
