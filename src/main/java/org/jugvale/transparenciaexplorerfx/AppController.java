@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,10 +30,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 public class AppController implements Initializable {
 
     TransparenciaClient cliente;
+
+    // Para a paginação
+    final int NUM_RES = 20;
 
     final String ID_CARGO_GOVERNADOR = "3";
     final String ID_CARGO_SENADOR = "5";
@@ -58,6 +64,10 @@ public class AppController implements Initializable {
     private ProgressIndicator prgCarregando;
     @FXML
     Label lblErroBusca;
+    @FXML
+    private Pane pnlPaginador;
+    // Ainda não tem no meu SceneBuild
+    private Pagination paginador;
     @FXML
     private Group grpEstados;
     @FXML
@@ -101,15 +111,27 @@ public class AppController implements Initializable {
         cargoSelecionado = new SimpleStringProperty();
         carregando = new SimpleBooleanProperty();
         erro = new SimpleBooleanProperty();
+        // a minha versão do SceneBuilder ainda não tem um paginador...
+        paginador = new Pagination(Pagination.INDETERMINATE);
+        paginador.setMinWidth(600);
+        pnlPaginador.getChildren().setAll(paginador);
         cargoSelecionado.addListener((chg, v, n) -> {
+            paginador.setCurrentPageIndex(0);
             carregaCandidatos();
         });
         estadoSelecionado.addListener((chg, v, n) -> {
+            paginador.setCurrentPageIndex(0);
             novoEstadoSelecionado();
         });
+        paginador.currentPageIndexProperty().addListener((chg, v, n) -> {
+            // BUG: Será chamado duas vezes a carga
+            carregaCandidatos();
+        });
+        
         lblErroBusca.visibleProperty().bind(erro);
         prgCarregando.visibleProperty().bind(carregando);
         tblCandidatos.disableProperty().bind(carregando.or(erro));
+        paginador.disableProperty().bind(carregando.or(erro));
     }
 
     private void inicializaColunas() {
@@ -157,10 +179,15 @@ public class AppController implements Initializable {
 
     private List<Candidato> busca(String estado, String cargo) throws RestException {
         // tenta ver se tem no cache, se não tiver busca novos e coloca no cache
-        String chaveCache = estado + cargo;
+        int paginaAtual = paginador.getCurrentPageIndex();
+        String chaveCache = estado + cargo + paginaAtual;
+        System.out.println(NUM_RES + " - " + NUM_RES * paginaAtual);
         List<Candidato> res = cache.get(chaveCache);
         if (res == null) {
-            res = cliente.getCandidatosByCargo(estado, cargo);
+            // INFELIZMENTE a API não deixa a gente saber quantos candidatos tem..
+            // Então eu começo com páginas de 50 candidatos...
+            //res = cliente.getCandidatosByCargo(estado, cargo);
+            res = cliente.getCandidatos(estado, null, null, cargo, NUM_RES, NUM_RES * paginaAtual);
             cache.put(chaveCache, res);
         }
         return res;

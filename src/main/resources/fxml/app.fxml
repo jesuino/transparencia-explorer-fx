@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="643.0" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jugvale.transparenciaexplorerfx.AppController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="643.0" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jugvale.transparenciaexplorerfx.AppController">
   <children>
     <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" minHeight="302.0" minWidth="327.0" prefHeight="317.0" prefWidth="327.0">
       <children>
@@ -91,13 +91,14 @@
             </Label>
           </children>
         </StackPane>
+        <StackPane fx:id="pnlPaginador" prefHeight="58.0" prefWidth="643.0" />
+        <Label prefHeight="33.0" prefWidth="643.0" text="Fonte dos dados: Transparência Brasil, projetos Excelências e Às Claras. A Transparência Brasil não se responsabiliza pelo uso que venha a ser feito desses dados nesta aplicação" textAlignment="CENTER" textFill="#ff3333" wrapText="true">
+          <font>
+            <Font name="System Bold Italic" size="10.0" />
+          </font>
+        </Label>
       </children>
     </VBox>
-    <Label layoutX="0.0" layoutY="596.0" prefHeight="33.0" prefWidth="643.0" text="Fonte dos dados: Transparência Brasil, projetos Excelências e Às Claras. A Transparência Brasil não se responsabiliza pelo uso que venha a ser feito desses dados nesta aplicação" textAlignment="CENTER" textFill="#ff3333" wrapText="true">
-      <font>
-        <Font name="System Bold Italic" size="8.0" />
-      </font>
-    </Label>
     <VBox id="VBox" alignment="CENTER" layoutX="323.0" layoutY="34.0" spacing="5.0">
       <children>
         <Label fx:id="lblNomeEstado" alignment="CENTER" prefWidth="320.0" styleClass="estado-selecionado" text="nome do estado" textAlignment="CENTER">
