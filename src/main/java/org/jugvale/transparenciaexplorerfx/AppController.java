@@ -10,13 +10,17 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
@@ -39,18 +43,25 @@ public class AppController implements Initializable {
     final String CHAVE = "lGkuSLiphXo7";
     final String PRIMEIRO_ESTADO = "DF";
 
+    // Um cache bem simples para os dados dos candidatos... 
+    // Pode crescer muito e dar estouro de memória na aplicação
     Map<String, List<Candidato>> cache;
 
     private StringProperty estadoSelecionado;
     private StringProperty cargoSelecionado;
+    private BooleanProperty carregando;
+    private BooleanProperty erro;
 
     @FXML
     private TableView<Candidato> tblCandidatos;
     @FXML
+    private ProgressIndicator prgCarregando;
+    @FXML
+    Label lblErroBusca;
+    @FXML
     private Group grpEstados;
     @FXML
     private Label lblNomeEstado;
-
     @FXML
     private TableColumn<Candidato, String> colApelido;
     @FXML
@@ -59,7 +70,6 @@ public class AppController implements Initializable {
     private TableColumn<Candidato, String> colPartido;
     @FXML
     private TableColumn<Candidato, String> colNum;
-
     @FXML
     private ToggleGroup grpCargos;
     @FXML
@@ -77,24 +87,29 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        inicializaVariveis();
+        inicializaPropriedades();
         inicializaColunas();
         configuraCargos();
         configuraEstados();
-        estadoSelecionado.set(PRIMEIRO_ESTADO);    
+        estadoSelecionado.set(PRIMEIRO_ESTADO);
     }
 
-    private void inicializaVariveis() {
+    private void inicializaPropriedades() {
         cliente = new TransparenciaClient(CHAVE);
         cache = new HashMap<>();
         estadoSelecionado = new SimpleStringProperty();
         cargoSelecionado = new SimpleStringProperty();
+        carregando = new SimpleBooleanProperty();
+        erro = new SimpleBooleanProperty();
         cargoSelecionado.addListener((chg, v, n) -> {
             carregaCandidatos();
         });
         estadoSelecionado.addListener((chg, v, n) -> {
             novoEstadoSelecionado();
         });
+        lblErroBusca.visibleProperty().bind(erro);
+        prgCarregando.visibleProperty().bind(carregando);
+        tblCandidatos.disableProperty().bind(carregando.or(erro));
     }
 
     private void inicializaColunas() {
@@ -107,19 +122,48 @@ public class AppController implements Initializable {
     // TODO: Fazer cache
     // TODO: adicionar uma tela que indica que os dados estão carregando para o usuário
     private void carregaCandidatos() {
-        try {
-            String estado = estadoSelecionado.get();
-            String cargo = cargoSelecionado.get();
-            estado = estado == null ? PRIMEIRO_ESTADO : estado;
-            cargo = cargo == null ? ID_CARGO_GOVERNADOR : cargo;
-            List<Candidato> dadosLidos = cliente.getCandidatosByCargo(estado, cargo);
-            tblCandidatos.setItems(FXCollections.observableArrayList(dadosLidos));
+        carregando.set(true);
+        erro.set(false);
+        new Thread(new Task<List<Candidato>>() {
 
-        } catch (RestException ex) {
-            System.out.println(ex.getHttpMessage());
-            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
+            @Override
+            protected List<Candidato> call() throws Exception {
+                String estado = estadoSelecionado.get();
+                String cargo = cargoSelecionado.get();
+                estado = estado == null ? PRIMEIRO_ESTADO : estado;
+                cargo = cargo == null ? ID_CARGO_GOVERNADOR : cargo;
+                return busca(estado, cargo);
+            }
+
+            @Override
+            protected void succeeded() {
+                List<Candidato> dadosLidos = this.getValue();
+                tblCandidatos.setItems(FXCollections.observableArrayList(dadosLidos));
+                carregando.set(false);
+                erro.set(false);
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                Throwable ex = getException();
+                Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+                carregando.set(false);
+                erro.set(true);
+            }
+
+        }).start();
+    }
+
+    private List<Candidato> busca(String estado, String cargo) throws RestException {
+        // tenta ver se tem no cache, se não tiver busca novos e coloca no cache
+        String chaveCache = estado + cargo;
+        List<Candidato> res = cache.get(chaveCache);
+        if (res == null) {
+            res = cliente.getCandidatosByCargo(estado, cargo);
+            cache.put(chaveCache, res);
         }
+        return res;
     }
 
     private void configuraCargos() {
@@ -137,7 +181,6 @@ public class AppController implements Initializable {
     }
 
     private void configuraEstados() {
-        // quando o usuário clicar no Label, vamos configurar o estado selecionado com o valor do Label
         grpEstados.getChildren().forEach(c -> {
             Label l = (Label) c;
             l.setOnMouseClicked(e -> estadoSelecionado.set(l.getText()));
@@ -148,7 +191,7 @@ public class AppController implements Initializable {
         String siglaEstadoSelecionado = estadoSelecionado.get();
         String nomeEstado = EstadoUtil.nome(siglaEstadoSelecionado);
         lblNomeEstado.setText(nomeEstado);
-        // TODO: Cache
+        // TODO: Cache?
         imgEstado.setImage(new Image(EstadoUtil.urlBandeira(siglaEstadoSelecionado)));
         carregaCandidatos();
     }

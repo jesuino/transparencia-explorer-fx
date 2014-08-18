@@ -1,7 +1,7 @@
 .estado:hover{
-	-fx-effect: dropshadow(three-pass-box , yellow, 20, 0.4 , 0 , 0 );
-	-fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box , yellow, 20, 0.4 , 0 , 0 );
+    -fx-cursor: hand;
 }
-.estado-selecionado{
+.estado-selecionado .erro{
     -fx-text-fill:red;   
 }
